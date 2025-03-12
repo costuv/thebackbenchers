@@ -1,0 +1,45 @@
+@font-face {
+    font-family: 'ITC Benguiat';
+    src: url('/fonts/book.otf') format('otf');
+}
+
+.font-benguiat {
+    font-family: 'ITC Benguiat', serif;
+}
+
+.story-content {
+    text-align: justify;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    white-space: pre-wrap;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.story-content p {
+    margin-bottom: 1.5rem;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+    .story-content {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        padding: 0 0.5rem;
+    }
+    
+    .nav-title {
+        font-size: 1.5rem;
+    }
+    
+    .chapter-title {
+        font-size: 1.5rem;
+    }
+    
+    /* Improve tap targets on mobile */
+    button, .btn, a.btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
