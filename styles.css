@@ -1,3 +1,4 @@
+/* Font declaration */
 @font-face {
     font-family: 'Vintage';
     src: url('/fonts/vintage.otf') format('opentype'),
@@ -7,14 +8,19 @@
     font-display: swap;
 }
 
+/* Apply Vintage font globally */
+* {
+    font-family: 'Vintage', serif;
+}
+
+/* Remove redundant font assignments */
+.font-benguiat {
+    letter-spacing: 0.02em;
+}
+
 /* Base typography */
 body {
     letter-spacing: 0.01em;
-}
-
-.font-benguiat {
-    font-family: 'Vintage', serif;
-    letter-spacing: 0.02em;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -97,7 +103,6 @@ input:focus, textarea:focus, select:focus {
 .section-header {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
     position: relative;
 }
 
@@ -213,4 +218,345 @@ nav {
         min-height: 44px;
         min-width: 44px;
     }
+}
+
+/* Dark mode colors */
+:root {
+    --obsidian-black: #141414;
+}
+
+/* Theme transition */
+body * {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode overrides */
+.dark {
+    background-color: var(--obsidian-black);
+    color: #fff;
+}
+
+.dark .bg-white {
+    background-color: #1f1f1f;
+    color: #fff;
+}
+
+.dark .bg-gray-50,
+.dark .bg-gray-100 {
+    background-color: var(--obsidian-black);
+}
+
+.dark .text-gray-600,
+.dark .text-gray-500,
+.dark .text-gray-700 {
+    color: #9ca3af;
+}
+
+.dark .border-gray-100,
+.dark .border-gray-200 {
+    border-color: #2d2d2d;
+}
+
+.dark .shadow-md {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+    background-color: #2d2d2d;
+    border-color: #3f3f3f;
+    color: #fff;
+}
+
+.dark .card {
+    background-color: #1f1f1f;
+    border: none;
+    box-shadow: none;
+}
+
+.dark .card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+}
+
+.dark .chapter-item {
+    border-left-color: transparent;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+    border-bottom-color: #2d2d2d;
+}
+
+.dark .chapter-item:hover {
+    border-left-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark .chapter-item h3,
+.dark .chapter-item p,
+.dark .chapter-item span {
+    color: #e5e7eb;
+}
+
+.dark .chapter-item:hover h3 {
+    color: #fff;
+}
+
+.dark .chapter-item:hover .text-gray-500,
+.dark .chapter-item:hover .text-gray-600,
+.dark .chapter-item:hover .text-gray-700 {
+    color: #d1d5db;
+}
+
+.dark .chapter-item .chapter-number {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #e5e7eb;
+}
+
+.dark .chapter-item:hover .chapter-number {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+.dark .chapter-item:last-child {
+    border-bottom: none;
+}
+
+/* Ensure text remains visible in dark mode hover */
+.dark .chapter-item h3 {
+    color: #fff;
+}
+
+.dark .chapter-item:hover h3,
+.dark .chapter-item:hover p,
+.dark .chapter-item:hover span {
+    color: #fff !important;
+}
+
+.dark .chapter-item .chapter-number {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.dark .chapter-item:hover .chapter-number {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+/* Additional contrast improvements for dark mode */
+.dark .text-gray-600,
+.dark .text-gray-500,
+.dark .text-gray-700 {
+    color: #9ca3af !important;
+}
+
+.dark .chapter-item:hover .text-gray-600,
+.dark .chapter-item:hover .text-gray-500,
+.dark .chapter-item:hover .text-gray-700 {
+    color: #e5e7eb !important;
+}
+
+/* Update button shadows in dark mode */
+.dark button, 
+.dark .btn {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.dark button:hover,
+.dark .btn:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+/* Update focus styles for dark mode */
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+/* Alert styles for dark mode */
+.dark .bg-green-100 {
+    background-color: rgba(6, 78, 59, 0.5);
+}
+
+.dark .bg-red-100 {
+    background-color: rgba(127, 29, 29, 0.5);
+}
+
+.dark .text-green-700 {
+    color: #6ee7b7;
+}
+
+.dark .text-red-700 {
+    color: #fca5a5;
+}
+
+.dark .border-green-400 {
+    border-color: #059669;
+}
+
+.dark .border-red-400 {
+    border-color: #dc2626;
+}
+
+/* Update dark mode chapter card styles */
+.dark .chapter-item {
+    border-left-color: transparent;
+}
+
+.dark .chapter-item:hover h3 {
+    color: #fff;
+}
+
+.dark .chapter-item:hover .text-gray-500,
+.dark .chapter-item:hover .text-gray-600,
+.dark .chapter-item:hover .text-gray-700 {
+    color: #d1d5db;
+}
+
+.dark .chapter-item:hover .chapter-number {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.dark .chapter-item .chapter-number {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #d1d5db;
+}
+
+/* Ensure proper contrast for chapter cards in dark mode */
+.dark .divide-gray-100 > * + * {
+    border-color: rgba(255, 255, 255, 0.1);
+    border-color: #2d2d2d;
+}
+
+.dark .card {
+    background-color: #1f1f1f;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: none;
+    box-shadow: none;
+}
+
+.dark .card:hover {
+    background-color: #262626;
+}
+
+/* Dark mode chapter hover fix */
+.dark .chapter-item {
+    border-left-color: transparent;
+    border-left: 3px solid transparent;
+    border-bottom-color: #2d2d2d;
+}
+
+.dark .chapter-item:hover {
+    border-left-color: #fff;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.dark .chapter-item:hover h3,
+.dark .chapter-item:hover p,
+.dark .chapter-item:hover span,
+.dark .chapter-item:hover .text-gray-500,
+.dark .chapter-item:hover .text-gray-600,
+.dark .chapter-item:hover .text-gray-700 {
+    color: var(--obsidian-black) !important;
+}
+
+.dark .chapter-item:hover .chapter-number {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--obsidian-black);
+}
+
+/* Dark mode chapter item styles - Update or add these rules */
+.dark .chapter-item {
+    border-left: 3px solid transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dark .chapter-item:last-child {
+    border-bottom: none;
+}
+
+.dark .chapter-item:hover {
+    border-left-color: #fff;
+    background-color: #fff;
+}
+
+.dark #chapters {
+    background-color: #1f1f1f;
+    border: none;
+}
+
+.dark .divide-gray-100 > * + * {
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-b {
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Ensure all text elements turn black on hover */
+.dark .chapter-item:hover *,
+.dark .chapter-item:hover h3,
+.dark .chapter-item:hover p,
+.dark .chapter-item:hover span,
+.dark .chapter-item:hover .text-gray-500,
+.dark .chapter-item:hover .text-gray-600,
+.dark .chapter-item:hover .text-gray-700 {
+    color: var(--obsidian-black) !important;
+}
+
+/* Normal state text colors */
+.dark .chapter-item h3 {
+    color: #fff !important;
+}
+
+.dark .chapter-item p,
+.dark .chapter-item span,
+.dark .chapter-item .text-gray-500,
+.dark .chapter-item .text-gray-600,
+.dark .chapter-item .text-gray-700 {
+    color: #9ca3af !important;
+}
+
+/* Update chapter number styles */
+.dark .chapter-item .chapter-number {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.dark .chapter-item:hover .chapter-number {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--obsidian-black);
+}
+
+.dark #chapters {
+    background-color: #1f1f1f;
+    border: none;
+}
+
+/* Remove any unwanted borders in dark mode */
+.dark .shadow-md {
+    box-shadow: none;
+}
+
+/* Update dark mode chapter item styles */
+.dark .chapter-item {
+    border: none !important;
+    border-bottom: 1px solid rgba(75, 75, 75, 0.5) !important;
+}
+
+.dark .chapter-item:last-child {
+    border-bottom: none !important;
+}
+
+.dark .chapter-item:hover {
+    border-left: 3px solid #4b4b4b !important;
+    background-color: #fff;
+}
+
+/* Section header dark mode fix */
+.dark .section-header:after {
+    background-color: #fff;
 }
