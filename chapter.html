@@ -11,10 +11,12 @@
     <div id="authContent" class="hidden">
         <nav class="py-3 px-4 md:py-4 md:px-6 bg-white shadow-md sticky top-0 z-50">
             <div class="max-w-7xl mx-auto flex items-center">
-                <h1 class="text-xl md:text-2xl lg:text-3xl font-benguiat font-bold mr-auto">
-                    <span class="block md:hidden">TB</span>
-                    <span class="hidden md:block">The Backbenchers</span>
-                </h1>
+                <a href="index.html" class="mr-auto">
+                    <h1 class="text-xl md:text-2xl lg:text-3xl font-benguiat font-bold">
+                        <span class="block md:hidden">TB</span>
+                        <span class="hidden md:block">The Backbenchers</span>
+                    </h1>
+                </a>
                 
                 <!-- Mobile menu button -->
                 <button id="mobileMenuBtn" class="md:hidden p-2 focus:outline-none">
@@ -47,21 +49,29 @@
         </nav>
         
         <main class="max-w-4xl mx-auto px-3 md:px-4 py-6 md:py-12">
-            <div id="storyContainer" class="bg-white p-4 md:p-8 rounded-lg shadow-md">
+            <div id="storyContainer" class="bg-white p-4 md:p-8 rounded-lg shadow-md card">
                 <h2 id="chapterTitle" class="text-xl md:text-3xl font-benguiat mb-2 text-center chapter-title"></h2>
                 <p id="authorInfo" class="text-center text-gray-500 mb-8"></p>
                 
-                <div id="storyContent" class="story-content my-12"></div>
+                <div class="border-t border-b border-gray-100 my-6">
+                    <div id="storyContent" class="story-content my-12"></div>
+                </div>
                 
                 <div class="mt-8 md:mt-12 flex flex-wrap justify-between gap-3">
-                    <a href="#" id="prevChapter" class="px-3 py-2 md:px-4 md:py-2 bg-black text-white rounded hover:bg-gray-800 transition-all hidden">Previous</a>
-                    <a href="index.html" class="px-3 py-2 md:px-4 md:py-2 border border-black rounded hover:bg-black hover:text-white transition-all">Chapters</a>
-                    <a href="#" id="nextChapter" class="px-3 py-2 md:px-4 md:py-2 bg-black text-white rounded hover:bg-gray-800 transition-all hidden">Next</a>
+                    <a href="#" id="prevChapter" class="px-3 py-2 md:px-4 md:py-2 bg-black text-white rounded hover:bg-gray-800 transition-all hidden btn">
+                        &larr; Previous
+                    </a>
+                    <a href="index.html" class="px-3 py-2 md:px-4 md:py-2 border border-black rounded hover:bg-black hover:text-white transition-all btn">
+                        Chapters
+                    </a>
+                    <a href="#" id="nextChapter" class="px-3 py-2 md:px-4 md:py-2 bg-black text-white rounded hover:bg-gray-800 transition-all hidden btn">
+                        Next &rarr;
+                    </a>
                 </div>
                 
                 <div id="editControls" class="mt-6 text-right hidden">
-                    <button id="editChapter" class="px-4 py-2 border border-black rounded hover:bg-black hover:text-white transition-all mr-2">Edit</button>
-                    <button id="deleteChapter" class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition-all">Delete</button>
+                    <button id="editChapter" class="px-4 py-2 border border-black rounded hover:bg-black hover:text-white transition-all mr-2 btn">Edit</button>
+                    <button id="deleteChapter" class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition-all btn">Delete</button>
                 </div>
             </div>
         </main>

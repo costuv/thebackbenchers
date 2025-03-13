@@ -234,11 +234,19 @@ function loadStory(id) {
             const userRef = ref(database, 'users/' + story.authorId);
             const userSnapshot = await get(userRef);
             const userData = userSnapshot.val();
-            const authorName = userData ? userData.characterName : 'Unknown';
+            const authorName = userData ? userData.characterName || userData.fullName : 'Unknown';
             
             // Find position in sequence
             const position = allStories.findIndex(s => s.id === id);
             const chapterNumber = position + 1;
+            
+            // Format date nicely
+            const createdDate = new Date(story.createdAt);
+            const formattedDate = createdDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
             
             // Format content to preserve formatting
             const formattedContent = story.content
@@ -250,7 +258,11 @@ function loadStory(id) {
             // Update UI
             document.title = `Chapter ${chapterNumber}: ${story.title} - The Backbenchers`;
             document.getElementById('chapterTitle').textContent = `Chapter ${chapterNumber}: ${story.title}`;
-            document.getElementById('authorInfo').textContent = `Written by ${authorName}`;
+            document.getElementById('authorInfo').innerHTML = `
+                <span class="font-medium">Written by ${authorName}</span>
+                <span class="mx-2 opacity-50">•</span>
+                <span class="text-sm">${formattedDate}</span>
+            `;
             document.getElementById('storyContent').innerHTML = formattedContent;
             
             // Show edit controls for the author
@@ -275,7 +287,10 @@ function updateNavigation() {
     
     // Previous chapter
     if (currentIndex > 0) {
-        prevChapterLink.href = `chapter.html?id=${allStories[currentIndex-1].id}`;
+        const prevStory = allStories[currentIndex-1];
+        const prevChapterNumber = currentIndex;
+        prevChapterLink.href = `chapter.html?id=${prevStory.id}`;
+        prevChapterLink.innerHTML = `&larr; Chapter ${prevChapterNumber}`;
         prevChapterLink.classList.remove('hidden');
     } else {
         prevChapterLink.classList.add('hidden');
@@ -283,7 +298,10 @@ function updateNavigation() {
     
     // Next chapter
     if (currentIndex < allStories.length - 1) {
-        nextChapterLink.href = `chapter.html?id=${allStories[currentIndex+1].id}`;
+        const nextStory = allStories[currentIndex+1];
+        const nextChapterNumber = currentIndex + 2;
+        nextChapterLink.href = `chapter.html?id=${nextStory.id}`;
+        nextChapterLink.innerHTML = `Chapter ${nextChapterNumber} &rarr;`;
         nextChapterLink.classList.remove('hidden');
     } else {
         nextChapterLink.classList.add('hidden');

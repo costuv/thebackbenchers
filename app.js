@@ -230,7 +230,7 @@ async function handleLogout() {
 // Story loading - changed to create chapter menu instead
 function loadStories() {
     const storiesRef = ref(database, 'stories');
-    onValue(storiesRef, (snapshot) => {
+    onValue(storiesRef, async (snapshot) => {
         const stories = snapshot.val();
         const chaptersContainer = document.getElementById('chapters');
         chaptersContainer.innerHTML = '';
@@ -246,18 +246,76 @@ function loadStories() {
             ...story
         })).sort((a, b) => a.createdAt - b.createdAt);
         
-        // Create chapter links
-        storiesArray.forEach((story, index) => {
-            const chapterNumber = index + 1;
-            const chapterLink = document.createElement('div');
-            chapterLink.className = 'text-center';
-            chapterLink.innerHTML = `
-                <a href="chapter.html?id=${story.id}" class="block p-4 hover:bg-gray-100 rounded-lg transition-colors font-benguiat text-lg">
-                    Chapter ${chapterNumber}: ${story.title}
-                </a>
-            `;
-            chaptersContainer.appendChild(chapterLink);
-        });
+        // Update chapter count
+        document.getElementById('chapterCount').textContent = `${storiesArray.length} Chapter${storiesArray.length !== 1 ? 's' : ''}`;
+        
+        // Group stories by month/year
+        const storyGroups = {};
+        for (const story of storiesArray) {
+            const date = new Date(story.createdAt);
+            const monthYear = date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long'
+            });
+            
+            if (!storyGroups[monthYear]) {
+                storyGroups[monthYear] = [];
+            }
+            storyGroups[monthYear].push(story);
+        }
+        
+        // Create chapter sections by month
+        for (const [monthYear, stories] of Object.entries(storyGroups)) {
+            // Create section header
+            const sectionHeader = document.createElement('div');
+            sectionHeader.className = 'bg-gray-100 p-3 section-header';
+            sectionHeader.innerHTML = `<h4 class="font-medium text-gray-700">${monthYear}</h4>`;
+            chaptersContainer.appendChild(sectionHeader);
+            
+            // Create chapters for this month
+            for (let i = 0; i < stories.length; i++) {
+                const story = stories[i];
+                const chapterNumber = storiesArray.findIndex(s => s.id === story.id) + 1;
+                
+                // Get author info
+                let authorName = 'Unknown Author';
+                try {
+                    const userRef = ref(database, 'users/' + story.authorId);
+                    const userSnapshot = await get(userRef);
+                    const userData = userSnapshot.val();
+                    authorName = userData?.characterName || userData?.fullName || 'Unknown Author';
+                } catch (error) {
+                    console.error('Error getting author info:', error);
+                }
+                
+                // Format date
+                const date = new Date(story.createdAt);
+                const formattedDate = date.toLocaleDateString('en-US', {
+                    day: 'numeric',
+                    month: 'short'
+                });
+                
+                const chapterLink = document.createElement('div');
+                chapterLink.className = 'chapter-item';
+                chapterLink.innerHTML = `
+                    <a href="chapter.html?id=${story.id}" class="block p-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center">
+                            <div class="chapter-number flex-shrink-0 bg-black text-white rounded-full w-8 h-8 flex items-center justify-center mr-3">
+                                ${chapterNumber}
+                            </div>
+                            <div class="flex-grow">
+                                <h5 class="font-benguiat text-lg">${story.title}</h5>
+                                <div class="flex flex-wrap text-sm text-gray-500 mt-1">
+                                    <span class="mr-3">By ${authorName}</span>
+                                    <span>${formattedDate}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                `;
+                chaptersContainer.appendChild(chapterLink);
+            }
+        }
     });
 }
 

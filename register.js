@@ -1,18 +1,17 @@
 import { auth, database } from './firebase-config.js';
-import { createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js';
+import { createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js';
 import { ref, set, get } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js';
 
-function showAlert(message, type) {
-    const successAlert = document.getElementById('alertSuccess');
-    const errorAlert = document.getElementById('alertError');
+function showAlert(message, type, alertElement = null) {
+    const successAlert = alertElement || document.getElementById('alertSuccess');
+    const errorAlert = alertElement || document.getElementById('alertError');
     
-    successAlert.classList.add('hidden');
-    errorAlert.classList.add('hidden');
+    if (successAlert) successAlert.classList.add('hidden');
+    if (errorAlert) errorAlert.classList.add('hidden');
     
     if (type === 'success') {
         successAlert.textContent = message;
         successAlert.classList.remove('hidden');
-        // Auto hide success message after 3 seconds
         setTimeout(() => {
             successAlert.classList.add('hidden');
         }, 3000);
@@ -22,6 +21,61 @@ function showAlert(message, type) {
     }
 }
 
+// Handle access code verification using Firebase Database
+document.getElementById('accessCodeForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const accessCode = document.getElementById('accessCode').value.trim();
+    const accessCodeError = document.getElementById('accessCodeError');
+    
+    if (!accessCode) {
+        accessCodeError.textContent = 'Please enter an access code';
+        accessCodeError.classList.remove('hidden');
+        return;
+    }
+    
+    try {
+        // Show loading indicator
+        const submitButton = e.target.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.textContent;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Verifying...';
+        
+        // Get the access code from Firebase
+        const accessCodeRef = ref(database, 'config/registrationAccess/code');
+        const snapshot = await get(accessCodeRef);
+        
+        if (!snapshot.exists()) {
+            throw new Error('Access code not configured in database');
+        }
+        
+        const validAccessCode = snapshot.val();
+        
+        // Compare with entered code
+        if (accessCode === validAccessCode) {
+            // If matched, allow registration
+            document.getElementById('passwordProtection').classList.add('hidden');
+            document.getElementById('registrationForm').classList.remove('hidden');
+        } else {
+            // If not matched, show error
+            accessCodeError.textContent = 'Invalid access code';
+            accessCodeError.classList.remove('hidden');
+            
+            setTimeout(() => {
+                accessCodeError.classList.add('hidden');
+            }, 3000);
+        }
+    } catch (error) {
+        console.error('Error verifying access code:', error);
+        accessCodeError.textContent = 'Error verifying access code';
+        accessCodeError.classList.remove('hidden');
+    } finally {
+        // Restore button state
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
+    }
+});
+
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -30,10 +84,17 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
+    const role = document.getElementById('role').value;
 
     // Input validation
-    if (!fullName || !characterName || !email || !password) {
-        showAlert('All fields are required', 'error');
+    if (!fullName || !email || !password) {
+        showAlert('Full name, email and password are required', 'error');
+        return;
+    }
+
+    // Only require character name for authors
+    if (role === 'author' && !characterName) {
+        showAlert('Character name is required for authors', 'error');
         return;
     }
 
@@ -52,19 +113,11 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        const role = document.getElementById('role').value;
-        // Only require character name for authors
-        if (role === 'author' && !characterName) {
-            showAlert('Character name is required for authors', 'error');
-            await user.delete();
-            return;
-        }
-
-        // Then store user data
+        // Store user data
         try {
             await set(ref(database, 'users/' + user.uid), {
                 fullName: fullName,
-                characterName: role === 'author' ? characterName : null,
+                characterName: role === 'author' ? characterName : (characterName || null), // Store character name for authors or if provided
                 email: email,
                 role: role,
                 createdAt: Date.now()
@@ -98,5 +151,34 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
                 errorMessage += error.message;
         }
         showAlert(errorMessage, 'error');
+    }
+});
+
+// Add dynamic character name requirement based on role selection
+document.getElementById('role').addEventListener('change', function() {
+    const characterNameInput = document.getElementById('characterName');
+    const characterNameHint = document.getElementById('characterNameRequiredHint');
+    
+    if (this.value === 'author') {
+        characterNameInput.setAttribute('required', 'required');
+        characterNameHint.textContent = 'Required for authors';
+    } else {
+        characterNameInput.removeAttribute('required');
+        characterNameHint.textContent = 'Optional for readers';
+    }
+});
+
+// Initialize the character name requirement state on page load
+window.addEventListener('DOMContentLoaded', () => {
+    const roleSelect = document.getElementById('role');
+    const characterNameInput = document.getElementById('characterName');
+    const characterNameHint = document.getElementById('characterNameRequiredHint');
+    
+    if (roleSelect.value === 'author') {
+        characterNameInput.setAttribute('required', 'required');
+        characterNameHint.textContent = 'Required for authors';
+    } else {
+        characterNameInput.removeAttribute('required');
+        characterNameHint.textContent = 'Optional for readers';
     }
 });

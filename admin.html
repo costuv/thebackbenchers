@@ -11,10 +11,12 @@
     <div id="authContent" class="hidden">
         <nav class="py-3 px-4 md:py-4 md:px-6 bg-white shadow-md sticky top-0 z-50">
             <div class="max-w-7xl mx-auto flex items-center">
-                <h1 class="text-xl md:text-2xl lg:text-3xl font-benguiat font-bold mr-auto">
-                    <span class="block md:hidden">TB</span>
-                    <span class="hidden md:block">Story Management</span>
-                </h1>
+                <a href="index.html" class="mr-auto">
+                    <h1 class="text-xl md:text-2xl lg:text-3xl font-benguiat font-bold">
+                        <span class="block md:hidden">TB</span>
+                        <span class="hidden md:block">Story Management</span>
+                    </h1>
+                </a>
                 
                 <!-- Mobile menu button -->
                 <button id="mobileMenuBtn" class="md:hidden p-2 focus:outline-none">
@@ -54,9 +56,14 @@
                     <textarea id="content" placeholder="Story Content" required rows="10"
                         class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"></textarea>
                 </div>
-                <button type="submit" class="w-full md:w-auto px-6 py-2 bg-black text-white rounded hover:bg-gray-800 transition-all">
-                    Publish Story
-                </button>
+                <div class="flex justify-between items-center">
+                    <a href="javascript:history.back()" id="backButton" class="px-6 py-2 border border-black text-black rounded hover:bg-gray-100 transition-all">
+                        Back
+                    </a>
+                    <button type="submit" class="px-6 py-2 bg-black text-white rounded hover:bg-gray-800 transition-all">
+                        Publish Story
+                    </button>
+                </div>
             </form>
         </main>
     </div>
