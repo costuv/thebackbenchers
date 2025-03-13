@@ -33,15 +33,22 @@
                 </div>
                 
                 <!-- Mobile menu (hidden by default) -->
-                <div id="mobileMenu" class="fixed inset-0 bg-white z-50 flex flex-col pt-16 px-4 hidden">
-                    <button id="closeMenuBtn" class="absolute right-4 top-4 p-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                    <a href="admin.html" id="adminLinkMobile" class="hidden py-4 border-b border-gray-200 text-lg">Write Story</a>
-                    <button id="profileBtnMobile" class="py-4 border-b border-gray-200 text-left text-lg">Profile</button>
-                    <button id="logoutBtnMobile" class="py-4 border-b border-gray-200 text-left text-lg">Logout</button>
+                <div id="mobileMenu" class="fixed inset-0 hidden z-50">
+                    <div class="bg-black bg-opacity-50 absolute inset-0"></div>
+                    <div class="absolute right-0 top-0 h-full w-4/5 max-w-xs bg-white shadow-lg flex flex-col z-10">
+                        <div class="p-4 flex justify-end border-b border-gray-200">
+                            <button id="closeMenuBtn" class="p-2">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="bg-white flex-1 flex flex-col p-4">
+                            <a href="admin.html" id="adminLinkMobile" class="hidden py-3 mb-2 px-2 hover:bg-gray-100 rounded text-lg">Write Story</a>
+                            <button id="profileBtnMobile" class="py-3 mb-2 px-2 text-left hover:bg-gray-100 rounded text-lg">Profile</button>
+                            <button id="logoutBtnMobile" class="py-3 px-2 text-left hover:bg-gray-100 rounded text-lg">Logout</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
