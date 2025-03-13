@@ -1,6 +1,7 @@
 import { auth, database } from './firebase-config.js';
 import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js';
 import { ref, onValue, get, remove } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js';
+import { CommentManager } from './comments.js';
 
 let currentUser = null;
 let isAuthor = false;
@@ -271,9 +272,24 @@ function loadStory(id) {
             
             // Update navigation
             updateNavigation();
+
+            // Initialize comments after story is loaded
+            try {
+                new CommentManager(id);
+            } catch (error) {
+                console.error("Error initializing comments:", error);
+            }
+
+            // Remove loading screen after everything is loaded
+            document.getElementById('loadingScreen').classList.add('hidden');
         } else {
+            document.getElementById('loadingScreen').classList.add('hidden');
             window.location.href = 'index.html';
         }
+    }, (error) => {
+        console.error("Error loading story:", error);
+        document.getElementById('loadingScreen').classList.add('hidden');
+        window.location.href = 'index.html';
     });
 }
 
