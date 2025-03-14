@@ -27,6 +27,8 @@ document.getElementById('accessCodeForm').addEventListener('submit', async (e) =
     
     const accessCode = document.getElementById('accessCode').value.trim();
     const accessCodeError = document.getElementById('accessCodeError');
+    const submitButton = e.target.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.textContent;
     
     if (!accessCode) {
         accessCodeError.textContent = 'Please enter an access code';
@@ -36,8 +38,6 @@ document.getElementById('accessCodeForm').addEventListener('submit', async (e) =
     
     try {
         // Show loading indicator
-        const submitButton = e.target.querySelector('button[type="submit"]');
-        const originalButtonText = submitButton.textContent;
         submitButton.disabled = true;
         submitButton.textContent = 'Verifying...';
         
@@ -100,43 +100,49 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
     }
 
     try {
-        // Check if username already exists
+        // Check if username exists using a different structure
         const usernamesRef = ref(database, 'usernames');
-        const usernameSnapshot = await get(usernamesRef);
-        if (usernameSnapshot.exists() && usernameSnapshot.val()[username]) {
+        const snapshot = await get(usernamesRef);
+        const usernames = snapshot.val() || {};
+        
+        // Check if username is taken
+        const usernameTaken = Object.values(usernames).includes(username);
+        if (usernameTaken) {
             showAlert('Username already taken', 'error');
             return;
         }
 
-        // Create user account
+        // Create auth user first
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // Store user data and username
         try {
+            // Create atomic update object
             const updates = {};
             updates[`users/${user.uid}`] = {
-                fullName: fullName,
-                username: username,
+                fullName,
+                username,
                 characterName: role === 'author' ? characterName : (characterName || null),
-                email: email,
-                role: role,
+                email,
+                role,
                 createdAt: Date.now()
             };
-            updates[`usernames/${username}`] = user.uid;
+            updates[`usernames/${user.uid}`] = username;
 
+            // Perform atomic update
             await update(ref(database), updates);
 
             showAlert('Registration successful! Redirecting to login...', 'success');
             setTimeout(() => {
-                window.location.href = '/html/login.html';
+                window.location.href = 'login.html';
             }, 2000);
         } catch (dbError) {
-            // If database write fails, delete the auth user
+            console.error('Database error:', dbError);
             await user.delete();
-            showAlert('Registration failed: Database error. Please try again.', 'error');
+            throw dbError;
         }
     } catch (error) {
+        console.error('Registration error:', error);
         let errorMessage = 'Registration failed: ';
         switch (error.code) {
             case 'auth/email-already-in-use':
