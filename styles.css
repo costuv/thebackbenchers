@@ -1,0 +1,55 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #0A0A0A; /* Obsidian black */
+    color: white;
+    font-family: 'Vintage', serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    /*background-color: rgba(255, 255, 255, 0.05);*/
+}
+
+h1 {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+.head{
+    font-size: 3rem;
+}
+
+.date {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #ccc;
+}
+
+.time {
+    font-size: 1.5rem;
+    color: #999;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 3rem;
+    }
+    
+    .date {
+        font-size: 1.5rem;
+    }
+    
+    .time {
+        font-size: 1.2rem;
+    }
+}
