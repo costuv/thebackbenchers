@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon - Costuv Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0a0a0a;
+        }
+        .overlay {
+            background-color: rgba(10, 10, 10, 0.6); /* Darker overlay for more contrast */
+        }
+        
+        /* Enhanced loader styles */
+        .loader {
+            width: 60px;
+            height: 60px;
+            position: relative;
+        }
+        
+        .loader::before,
+        .loader::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 3px solid transparent;
+        }
+        
+        .loader::before {
+            border-top-color: #ffffff;
+            border-right-color: #ffffff;
+            animation: rotate 1.5s linear infinite;
+        }
+        
+        .loader::after {
+            border-bottom-color: #ffffff;
+            border-left-color: #ffffff;
+            animation: rotate 1s linear reverse infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Improved pulse animation for play button */
+        @keyframes pulse {
+            0% { 
+                transform: scale(1); 
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+            }
+            70% { 
+                transform: scale(1.1); 
+                box-shadow: 0 0 0 25px rgba(255, 255, 255, 0);
+            }
+            100% { 
+                transform: scale(1); 
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            }
+        }
+        
+        /* Enhanced fade in animation with slight movement */
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 1.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        
+        /* Staggered entrance for content elements */
+        .fade-in-stagger-1 {
+            animation: fadeInUp 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) 0.2s both;
+        }
+        
+        .fade-in-stagger-2 {
+            animation: fadeInUp 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) 0.4s both;
+        }
+        
+        .fade-in-stagger-3 {
+            animation: fadeInUp 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) 0.6s both;
+        }
+        
+        /* Hide content initially */
+        .hidden-content {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease-out, visibility 1s ease-out;
+        }
+        
+        .show-content {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Play button styles */
+        .play-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: all 0.3s ease;
+        }
+        
+        .play-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .play-btn-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            animation: ripple 2.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        
+        @keyframes ripple {
+            0% {
+                width: 100px;
+                height: 100px;
+                opacity: 1;
+            }
+            100% {
+                width: 160px;
+                height: 160px;
+                opacity: 0;
+            }
+        }
+        
+        /* Text effect styles */
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 
+                        0 0 20px rgba(255, 255, 255, 0.5), 
+                        0 0 30px rgba(255, 255, 255, 0.3);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.6), 
+                            0 0 10px rgba(255, 255, 255, 0.4), 
+                            0 0 15px rgba(255, 255, 255, 0.2);
+            }
+            to {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 
+                            0 0 20px rgba(255, 255, 255, 0.6), 
+                            0 0 30px rgba(255, 255, 255, 0.4), 
+                            0 0 40px rgba(255, 255, 255, 0.2);
+            }
+        }
+        
+        /* Gradient text effect */
+        .text-gradient {
+            background: linear-gradient(to right, #ffffff, #a0a0a0, #ffffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+            animation: gradient-shift 6s linear infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        /* Letter animation for "Coming Soon" */
+        .letter-animate span {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: letter-fade 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+        }
+        
+        @keyframes letter-fade {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Flash effect for studio name */
+        @keyframes flash {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                opacity: 1;
+            }
+            20%, 22%, 24%, 55% {
+                opacity: 0.5;
+            }
+        }
+        
+        .text-flash {
+            animation: flash 10s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="h-screen overflow-hidden bg-black">
+    <!-- Loader Overlay -->
+    <div id="loader-overlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black">
+        <div class="loader mb-6"></div>
+        <div class="text-white opacity-80 text-sm tracking-wider mt-4">LOADING</div>
+    </div>
+    
+    <!-- Play Button -->
+    <div id="play-button" class="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-90 opacity-0 pointer-events-none">
+        <div class="play-btn-ring"></div>
+        <button class="play-btn rounded-full p-8 pulse flex items-center justify-center relative z-10" style="width: 100px; height: 100px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="white" stroke="none">
+                <polygon points="7 4 21 12 7 20 7 4"></polygon>
+            </svg>
+        </button>
+    </div>
+    
+    <!-- Video Background with Overlay -->
+    <div class="absolute inset-0 w-full h-full z-0 hidden-content">
+        <div class="overlay absolute inset-0 w-full h-full z-10"></div>
+        <!-- Added poster attribute to help with loading -->
+        <video class="w-full h-full object-cover" loop playsinline poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+            <source src="background.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <!-- Content Area -->
+    <div class="relative z-20 flex flex-col items-center justify-center h-full text-white px-4 hidden-content">
+        <div class="text-center max-w-xl">
+            <!-- Enhanced title with effects -->
+            <h1 id="main-title" class="text-5xl md:text-7xl font-bold mb-6 text-gradient text-flash">COSTUV STUDIOS</h1>
+            
+            <!-- Enhanced subtitle with letter animation -->
+            <p id="subtitle" class="text-2xl md:text-3xl mb-8 text-glow letter-animate">
+                <span>C</span><span>o</span><span>m</span><span>i</span><span>n</span><span>g</span>
+                <span>&nbsp;</span>
+                <span>S</span><span>o</span><span>o</span><span>n</span>
+            </p>
+            
+            <p id="rights" class="text-sm mt-8 opacity-70 fade-in-stagger-3">All rights reserved to <a href="https://www.formula1.com/" class="text-blue-500 hover:underline">Formula 1</a></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
